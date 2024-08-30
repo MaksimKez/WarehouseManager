@@ -13,9 +13,12 @@ public class ApplicationDatabaseContext : DbContext
     public DbSet<ShelfEntity> Shelves { get; set; }
     
     public ApplicationDatabaseContext() { }
+
     public ApplicationDatabaseContext(DbContextOptions options)
         : base(options)
-    { }
+    {
+    }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
