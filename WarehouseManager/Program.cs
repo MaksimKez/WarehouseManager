@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using WarehouseManager.DataAccess;
 using WarehouseManager.Database;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,7 +20,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline.R
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -33,6 +34,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDatabaseContext>();
+    context.EnsureSeedData();
+}
 
 app.Run();
