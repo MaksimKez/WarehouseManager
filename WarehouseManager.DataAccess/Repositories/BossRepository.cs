@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using WarehouseManager.DataAccess.ContractsRepositories;
 using WarehouseManager.Database;
 using WarehouseManager.Database.Entities;
 
@@ -27,6 +27,15 @@ public class BossRepository : IBossRepository
         var entity = await _context.Bosses.FirstOrDefaultAsync(b => b.Name == name);
         if (entity == null)
             throw new ArgumentException("Boss with given name is not found", nameof(name));
+        
+        return entity;
+    }
+
+    public async Task<BossEntity> GetBySurnameAsync(string surname)
+    {
+        var entity = await _context.Bosses.FirstOrDefaultAsync(b => b.Surname == surname);
+        if (entity == null)
+            throw new ArgumentException("Boss with given surname is not found", nameof(surname));
         
         return entity;
     }
