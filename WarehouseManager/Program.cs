@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WarehouseManager.DataAccess;
+using WarehouseManager.DataAccess.ContractsRepositories;
+using WarehouseManager.DataAccess.Repositories;
 using WarehouseManager.Database;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<IBossRepository, BossRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IItemRepository, ItemRepository>();
 
 builder.Services.AddDbContext<ApplicationDatabaseContext>(x =>
 {
