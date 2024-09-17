@@ -26,7 +26,7 @@ public class ShelfRepository : IShelfRepository
     public async Task<IEnumerable<ShelfEntity>> GetAllAsync()
     {
         var entities = await _context.Shelves.ToListAsync();
-        if (entities == null || entities.Count == 0)
+        if (entities == null || !entities.Any())
             throw new ArgumentException("No shelves found");
         
         return entities;

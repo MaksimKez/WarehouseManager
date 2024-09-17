@@ -10,5 +10,5 @@ public interface IBossRepository
     Task<IEnumerable<BossEntity>> GetFilteredByDateOfRegAsync(DateTime dateOfReg);
     Task AddNewAsync(BossEntity boss);
     Task UpdateAsync(BossEntity boss);
-    Task DeleteAsync(int id);
+    Task DeleteAsync(Guid id);
 }

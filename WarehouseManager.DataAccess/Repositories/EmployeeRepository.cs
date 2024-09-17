@@ -35,7 +35,7 @@ public class EmployeeRepository : IEmployeeRepository
         public async Task<IEnumerable<EmployeeEntity>> GetAllAsync()
         {
             var entities = await _context.Employees.ToListAsync();
-            if (entities == null || entities.Count == 0)
+            if (entities == null || !entities.Any())
                 throw new ArgumentException("No employees found");
             
             return entities;
@@ -45,7 +45,7 @@ public class EmployeeRepository : IEmployeeRepository
         {
             var entities = await _context.Employees
                 .Where(e => e.Position == position).ToListAsync();
-            if (entities == null || entities.Count == 0)
+            if (entities == null || !entities.Any())
                 throw new ArgumentException("No employees found with the given position", nameof(position));
             
             return entities;
@@ -55,7 +55,7 @@ public class EmployeeRepository : IEmployeeRepository
         {
             var entities = await _context.Employees
                 .Where(e => e.Surname == surname).ToListAsync();
-            if (entities == null || entities.Count == 0)
+            if (entities == null || !entities.Any())
                 throw new ArgumentException("No employees found with the given surname", nameof(surname));
             
             return entities;
@@ -65,7 +65,7 @@ public class EmployeeRepository : IEmployeeRepository
         {
             var entities = await _context.Employees
                 .Where(e => e.IsFired == isFired).ToListAsync();
-            if (entities == null || entities.Count == 0)
+            if (entities == null || !entities.Any())
                 throw new ArgumentException("No employees found with the given fired status", nameof(isFired));
             
             return entities;
@@ -75,7 +75,7 @@ public class EmployeeRepository : IEmployeeRepository
         {
             var entities = await _context.Employees
                 .Where(e => e.CreatedAt >= startDate && e.CreatedAt <= endDate).ToListAsync();
-            if (entities == null || entities.Count == 0)
+            if (entities == null || !entities.Any())
                 throw new ArgumentException("No employees found in the given date range", nameof(startDate));
             
             return entities;

@@ -26,7 +26,7 @@ public class ItemRepository : IItemRepository
     public async Task<IEnumerable<ItemEntity>> GetAllAsync()
     {
         var entities = await _context.Items.ToListAsync();
-        if (entities == null || entities.Count == 0)
+        if (entities == null || !entities.Any())
             throw new ArgumentException("No items found");
         
         return entities;
@@ -36,7 +36,7 @@ public class ItemRepository : IItemRepository
     {
         var entities = await _context.Items
             .Where(i => i.IsFragile == isFragile).ToListAsync();
-        if (entities == null || entities.Count == 0)
+        if (entities == null || !entities.Any())
             throw new ArgumentException("No items found with the given fragile status", nameof(isFragile));
         
         return entities;

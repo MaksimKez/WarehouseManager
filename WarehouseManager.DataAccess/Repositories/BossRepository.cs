@@ -22,6 +22,7 @@ public class BossRepository : IBossRepository
         
         return entity;
     }
+
     public async Task<BossEntity> GetByNameAsync(string name)
     {
         var entity = await _context.Bosses.FirstOrDefaultAsync(b => b.Name == name);
@@ -42,17 +43,28 @@ public class BossRepository : IBossRepository
 
     public async Task<IEnumerable<BossEntity>> GetFilteredByDateOfRegAsync(DateTime dateOfReg)
     {
-        return await _context.Bosses.Where(b => b.CreatedAt.Date == dateOfReg.Date).ToListAsync();
+        var entities = await _context.Bosses
+            .Where(b => b.CreatedAt.Date == dateOfReg.Date).ToListAsync();
+        if (entities == null || !entities.Any())
+            throw new ArgumentException("No bosses found for the given registration date", nameof(dateOfReg));
+        
+        return entities;
     }
 
     public async Task AddNewAsync(BossEntity boss)
     {
+        if (boss == null)
+            throw new ArgumentNullException(nameof(boss), "Boss cannot be null");
+
         await _context.Bosses.AddAsync(boss);
         await _context.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(BossEntity boss)
     {
+        if (boss == null)
+            throw new ArgumentNullException(nameof(boss), "Boss cannot be null");
+
         var existingBoss = await _context.Bosses.FindAsync(boss.Id);
         if (existingBoss == null)
             throw new ArgumentException("Boss with given Id is not found", nameof(boss.Id));
@@ -61,7 +73,7 @@ public class BossRepository : IBossRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(Guid id)
     {
         var boss = await _context.Bosses.FindAsync(id);
         if (boss == null)
