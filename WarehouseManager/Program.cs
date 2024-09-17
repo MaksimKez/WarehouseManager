@@ -14,6 +14,7 @@ builder.Services.AddScoped<IBossRepository, BossRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 builder.Services.AddScoped<IShelfRepository, ShelfRepository>();
+builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 
 builder.Services.AddDbContext<ApplicationDatabaseContext>(x =>
 {
