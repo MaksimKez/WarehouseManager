@@ -3,6 +3,7 @@ using WarehouseManager.DataAccess;
 using WarehouseManager.DataAccess.ContractsRepositories;
 using WarehouseManager.DataAccess.Repositories;
 using WarehouseManager.Database;
+using WarehouseManager.Services.AutoMapperProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,11 @@ builder.Services.AddDbContext<ApplicationDatabaseContext>(x =>
     x.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddAutoMapper(typeof(BossProfile));
+builder.Services.AddAutoMapper(typeof(EmployeeProfile));
+builder.Services.AddAutoMapper(typeof(ItemProfile));
+builder.Services.AddAutoMapper(typeof(ShelfProfile));
+builder.Services.AddAutoMapper(typeof(TodoProfile));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
