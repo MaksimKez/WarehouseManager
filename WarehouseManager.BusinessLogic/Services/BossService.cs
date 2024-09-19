@@ -37,27 +37,23 @@ public class BossService : IBossService
 
     public async Task<IEnumerable<Boss>> GetFilteredByDateOfRegAsync(DateTime dateOfReg)
     {
-        var bossEntities = await _repository.GetFilteredByDateOfRegAsync(dateOfReg);
-        //todo BENCHMARK
-        //var bosses = bossEntities.Select(en => _mapper.Map<Boss>(en)).ToList();
-        //var bosses = await Task.WhenAll(bossEntities.Select(async en => await Task.Run(() => _mapper.Map<Boss>(en))));
-        //var bossCollection = bosses.AsEnumerable();
-        //return bossCollection;
-        return null;
+        var bossEntities = await _repository.GetFilteredByDateOfRegAsync(dateOfReg); 
+        var bosses = bossEntities.Select(en => _mapper.Map<Boss>(en)).ToList();
+        return bosses;
     }
 
-    public Task AddNewAsync(Boss boss)
+    public async Task AddNewAsync(Boss boss)
     {
-        throw new NotImplementedException();
+        await _repository.AddNewAsync(_mapper.Map<BossEntity>(boss));
     }
 
-    public Task UpdateAsync(Boss boss)
+    public async Task UpdateAsync(Boss boss)
     {
-        throw new NotImplementedException();
+        await _repository.UpdateAsync(_mapper.Map<BossEntity>(boss));
     }
 
-    public Task DeleteAsync(Guid id)
+    public async Task DeleteAsync(Guid id)
     {
-        throw new NotImplementedException();
+        await _repository.DeleteAsync(id);
     }
 }
