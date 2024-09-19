@@ -1,6 +1,6 @@
-using WarehouseManager.Services.Models;
+using WarehouseManager.BusinessLogic.Models;
 
-namespace WarehouseManager.Services.ContractsServices;
+namespace WarehouseManager.BusinessLogic.ContractsServices;
 
 public interface IBossService
 {

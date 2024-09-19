@@ -1,8 +1,8 @@
 using AutoMapper;
+using WarehouseManager.BusinessLogic.Models;
 using WarehouseManager.Database.Entities;
-using WarehouseManager.Services.Models;
 
-namespace WarehouseManager.Services.AutoMapperProfiles;
+namespace WarehouseManager.BusinessLogic.AutoMapperProfiles;
 
 public class ItemProfile : Profile
 {

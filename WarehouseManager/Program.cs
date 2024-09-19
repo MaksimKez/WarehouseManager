@@ -3,7 +3,7 @@ using WarehouseManager.DataAccess;
 using WarehouseManager.DataAccess.ContractsRepositories;
 using WarehouseManager.DataAccess.Repositories;
 using WarehouseManager.Database;
-using WarehouseManager.Services.AutoMapperProfiles;
+using WarehouseManager.BusinessLogic.AutoMapperProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
 

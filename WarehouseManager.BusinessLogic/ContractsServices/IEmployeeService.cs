@@ -1,7 +1,7 @@
+using WarehouseManager.BusinessLogic.Models;
 using WarehouseManager.Database.Entities;
-using WarehouseManager.Services.Models;
 
-namespace WarehouseManager.Services.ContractsServices;
+namespace WarehouseManager.BusinessLogic.ContractsServices;
 
 public interface IEmployeeService
 {

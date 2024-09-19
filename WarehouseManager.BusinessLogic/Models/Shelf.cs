@@ -1,4 +1,4 @@
-namespace WarehouseManager.Services.Models;
+namespace WarehouseManager.BusinessLogic.Models;
 
 public class Shelf
 {

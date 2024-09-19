@@ -6,7 +6,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseManager.DataAccess
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseManager.Database", "WarehouseManager.Database\WarehouseManager.Database.csproj", "{B21C25B4-E913-4A3C-9AE3-FD726BC8C072}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseManager.Services", "WarehouseManager.Services\WarehouseManager.Services.csproj", "{50B98973-25A7-4330-8A11-7A7D658DBC6A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseManager.BusinessLogic", "WarehouseManager.BusinessLogic\WarehouseManager.BusinessLogic.csproj", "{50B98973-25A7-4330-8A11-7A7D658DBC6A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
