@@ -21,7 +21,7 @@ public class ItemService : IItemService
     {
         var item = await _repository.GetByIdAsync(id);
         if (item == null)
-            throw new NullReferenceException("Employee was null");
+            throw new NullReferenceException("Item was null");
         
         return _mapper.Map<Item>(item);
     }
@@ -29,7 +29,7 @@ public class ItemService : IItemService
     public async Task<IEnumerable<Item>> GetAllAsync()
     {
         var entities = await _repository.GetAllAsync();
-        var items = entities.Select(en => _mapper.Map<Item>(en));
+        var items = entities.Select(en => _mapper.Map<Item>(en)).ToList();
         return items;
     }
 
