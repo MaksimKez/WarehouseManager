@@ -16,7 +16,7 @@ public class TodoRepository : ITodoRepository
 
     public async Task<TodoEntity> GetByIdAsync(Guid id)
     {
-        var entity = await _context.Todos.FirstOrDefaultAsync(t => t.Id == id);
+        var entity = await _context.Todos.AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
         if (entity == null)
             throw new ArgumentException("Todo with given Id is not found", nameof(id));
         
@@ -25,7 +25,7 @@ public class TodoRepository : ITodoRepository
 
     public async Task<IEnumerable<TodoEntity>> GetAllAsync()
     {
-        var entities = await _context.Todos.ToListAsync();
+        var entities = await _context.Todos.AsNoTracking().ToListAsync();
         if (entities == null || entities.Count == 0)
             throw new ArgumentException("No todos found");
         
@@ -35,7 +35,7 @@ public class TodoRepository : ITodoRepository
     public async Task<IEnumerable<TodoEntity>> GetByEmployeeIdAsync(Guid employeeId)
     {
         var entities = await _context.Todos
-            .Where(t => t.EmployeeId == employeeId).ToListAsync();
+            .Where(t => t.EmployeeId == employeeId).AsNoTracking().ToListAsync();
         if (entities == null || !entities.Any())
             throw new ArgumentException("No todos found for the given employee", nameof(employeeId));
         
@@ -44,7 +44,7 @@ public class TodoRepository : ITodoRepository
 
     public async Task<IEnumerable<TodoEntity>> GetByShelfIdAsync(Guid shelfId)
     {
-        var entities = await _context.Todos
+        var entities = await _context.Todos.AsNoTracking()
             .Where(t => t.ShelfId == shelfId).ToListAsync();
         if (entities == null || !entities.Any())
             throw new ArgumentException("No todos found for the given shelf", nameof(shelfId));
@@ -54,7 +54,7 @@ public class TodoRepository : ITodoRepository
 
     public async Task<IEnumerable<TodoEntity>> GetByItemIdAsync(Guid itemId)
     {
-        var entities = await _context.Todos
+        var entities = await _context.Todos.AsNoTracking()
             .Where(t => t.ItemId == itemId).ToListAsync();
         if (entities == null || !entities.Any())
             throw new ArgumentException("No todos found for the given item", nameof(itemId));
@@ -64,7 +64,7 @@ public class TodoRepository : ITodoRepository
 
     public async Task<IEnumerable<TodoEntity>> GetByIsDoneStatusAsync(bool isDone)
     {
-        var entities = await _context.Todos
+        var entities = await _context.Todos.AsNoTracking()
             .Where(t => t.IsDone == isDone).ToListAsync();
         if (entities == null || !entities.Any())
             throw new ArgumentException("No todos found with the given status", nameof(isDone));
@@ -74,7 +74,7 @@ public class TodoRepository : ITodoRepository
 
     public async Task<IEnumerable<TodoEntity>> GetByCreatedAtRangeAsync(DateTime startDate, DateTime endDate)
     {
-        var entities = await _context.Todos
+        var entities = await _context.Todos.AsNoTracking()
             .Where(t => t.CreatedAt >= startDate && t.CreatedAt <= endDate).ToListAsync();
         if (entities == null || !entities.Any())
             throw new ArgumentException("No todos found in the given date range", nameof(startDate));
@@ -96,7 +96,8 @@ public class TodoRepository : ITodoRepository
         if (todo == null)
             throw new ArgumentNullException(nameof(todo), "Todo cannot be null");
 
-        var existingTodo = await _context.Todos.FindAsync(todo.Id);
+        var existingTodo = await _context.Todos.
+            AsNoTracking().FirstOrDefaultAsync(b => b.Id == todo.Id);
         if (existingTodo == null)
             throw new ArgumentException("Todo with given Id is not found", nameof(todo.Id));
 
@@ -106,11 +107,11 @@ public class TodoRepository : ITodoRepository
 
     public async Task DeleteAsync(Guid id)
     {
-        var entity = await _context.Todos.FindAsync(id);
-        if (entity == null)
-            throw new ArgumentException("Todo with given Id is not found", nameof(id));
+        var todo = await _context.Todos.AsNoTracking().FirstOrDefaultAsync(b => b.Id == id);
+        if (todo == null)
+            throw new ArgumentException("Shelf with given Id is not found", nameof(id));
 
-        _context.Todos.Remove(entity);
+        _context.Todos.Remove(todo);
         await _context.SaveChangesAsync();
     }
 }

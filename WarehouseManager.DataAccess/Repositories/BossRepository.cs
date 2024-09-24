@@ -16,7 +16,7 @@ public class BossRepository : IBossRepository
 
     public async Task<BossEntity> GetByIdAsync(Guid id)
     {
-        var entity = await _context.Bosses.FirstOrDefaultAsync(b => b.Id == id);
+        var entity = await _context.Bosses.AsNoTracking().FirstOrDefaultAsync(b => b.Id == id);
         if (entity == null)
             throw new ArgumentException("Boss with given Id is not found", nameof(id));
         
@@ -25,7 +25,7 @@ public class BossRepository : IBossRepository
 
     public async Task<BossEntity> GetByNameAsync(string name)
     {
-        var entity = await _context.Bosses.FirstOrDefaultAsync(b => b.Name == name);
+        var entity = await _context.Bosses.AsNoTracking().FirstOrDefaultAsync(b => b.Name == name);
         if (entity == null)
             throw new ArgumentException("Boss with given name is not found", nameof(name));
         
@@ -34,7 +34,7 @@ public class BossRepository : IBossRepository
 
     public async Task<BossEntity> GetBySurnameAsync(string surname)
     {
-        var entity = await _context.Bosses.FirstOrDefaultAsync(b => b.Surname == surname);
+        var entity = await _context.Bosses.AsNoTracking().FirstOrDefaultAsync(b => b.Surname == surname);
         if (entity == null)
             throw new ArgumentException("Boss with given surname is not found", nameof(surname));
         
@@ -43,7 +43,7 @@ public class BossRepository : IBossRepository
 
     public async Task<IEnumerable<BossEntity>> GetFilteredByDateOfRegAsync(DateTime dateOfReg)
     {
-        var entities = await _context.Bosses
+        var entities = await _context.Bosses.AsNoTracking()
             .Where(b => b.CreatedAt.Date == dateOfReg.Date).ToListAsync();
         if (entities == null || !entities.Any())
             throw new ArgumentException("No bosses found for the given registration date", nameof(dateOfReg));
@@ -65,7 +65,7 @@ public class BossRepository : IBossRepository
         if (boss == null)
             throw new ArgumentNullException(nameof(boss), "Boss cannot be null");
 
-        var existingBoss = await _context.Bosses.FindAsync(boss.Id);
+        var existingBoss = await _context.Bosses.AsNoTracking().FirstOrDefaultAsync(b => b.Id == boss.Id);
         if (existingBoss == null)
             throw new ArgumentException("Boss with given Id is not found", nameof(boss.Id));
 
@@ -75,7 +75,7 @@ public class BossRepository : IBossRepository
 
     public async Task DeleteAsync(Guid id)
     {
-        var boss = await _context.Bosses.FindAsync(id);
+        var boss = await _context.Bosses.AsNoTracking().FirstOrDefaultAsync(b => b.Id == id);
         if (boss == null)
             throw new ArgumentException("Boss with given Id is not found", nameof(id));
 

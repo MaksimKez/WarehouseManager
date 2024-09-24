@@ -16,7 +16,7 @@ public class ItemRepository : IItemRepository
 
     public async Task<ItemEntity> GetByIdAsync(Guid id)
     {
-        var entity = await _context.Items.FirstOrDefaultAsync(i => i.Id == id);
+        var entity = await _context.Items.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
         if (entity == null)
             throw new ArgumentException("Item with given Id is not found", nameof(id));
         
@@ -25,7 +25,7 @@ public class ItemRepository : IItemRepository
 
     public async Task<IEnumerable<ItemEntity>> GetAllAsync()
     {
-        var entities = await _context.Items.ToListAsync();
+        var entities = await _context.Items.AsNoTracking().ToListAsync();
         if (entities == null || !entities.Any())
             throw new ArgumentException("No items found");
         
@@ -34,7 +34,7 @@ public class ItemRepository : IItemRepository
 
     public async Task<IEnumerable<ItemEntity>> GetByFragileStatusAsync(bool isFragile)
     {
-        var entities = await _context.Items
+        var entities = await _context.Items.AsNoTracking()
             .Where(i => i.IsFragile == isFragile).ToListAsync();
         if (entities == null || !entities.Any())
             throw new ArgumentException("No items found with the given fragile status", nameof(isFragile));
@@ -56,7 +56,8 @@ public class ItemRepository : IItemRepository
         if (item == null)
             throw new ArgumentNullException(nameof(item), "Item cannot be null");
 
-        var existingItem = await _context.Items.FindAsync(item.Id);
+        var existingItem = await _context.Items.AsNoTracking().
+            FirstOrDefaultAsync(b => b.Id == item.Id);
         if (existingItem == null)
             throw new ArgumentException("Item with given Id is not found", nameof(item.Id));
 
@@ -66,11 +67,11 @@ public class ItemRepository : IItemRepository
 
     public async Task DeleteAsync(Guid id)
     {
-        var entity = await _context.Items.FindAsync(id);
-        if (entity == null)
+        var item = await _context.Items.AsNoTracking().FirstOrDefaultAsync(b => b.Id == id);
+        if (item == null)
             throw new ArgumentException("Item with given Id is not found", nameof(id));
 
-        _context.Items.Remove(entity);
+        _context.Items.Remove(item);
         await _context.SaveChangesAsync();
     }
 }

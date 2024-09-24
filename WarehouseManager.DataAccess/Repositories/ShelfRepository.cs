@@ -16,7 +16,7 @@ public class ShelfRepository : IShelfRepository
 
     public async Task<ShelfEntity> GetByIdAsync(Guid id)
     {
-        var entity = await _context.Shelves.FirstOrDefaultAsync(s => s.Id == id);
+        var entity = await _context.Shelves.AsNoTracking().FirstOrDefaultAsync(s => s.Id == id);
         if (entity == null)
             throw new ArgumentException("Shelf with given Id is not found", nameof(id));
         
@@ -46,7 +46,8 @@ public class ShelfRepository : IShelfRepository
         if (shelf == null)
             throw new ArgumentNullException(nameof(shelf), "Shelf cannot be null");
 
-        var existingShelf = await _context.Shelves.FindAsync(shelf.Id);
+        var existingShelf = await _context.Shelves.
+            AsNoTracking().FirstOrDefaultAsync(b => b.Id == shelf.Id);
         if (existingShelf == null)
             throw new ArgumentException("Shelf with given Id is not found", nameof(shelf.Id));
 
@@ -56,11 +57,11 @@ public class ShelfRepository : IShelfRepository
 
     public async Task DeleteAsync(Guid id)
     {
-        var entity = await _context.Shelves.FindAsync(id);
-        if (entity == null)
+        var shelf = await _context.Shelves.AsNoTracking().FirstOrDefaultAsync(b => b.Id == id);
+        if (shelf == null)
             throw new ArgumentException("Shelf with given Id is not found", nameof(id));
 
-        _context.Shelves.Remove(entity);
+        _context.Shelves.Remove(shelf);
         await _context.SaveChangesAsync();
     }
 }

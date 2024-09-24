@@ -16,7 +16,7 @@ public class EmployeeRepository : IEmployeeRepository
 
         public async Task<EmployeeEntity> GetByIdAsync(Guid id)
         {
-            var entity = await _context.Employees.FirstOrDefaultAsync(e => e.Id == id);
+            var entity = await _context.Employees.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
             if (entity == null)
                 throw new ArgumentException("Employee with given Id is not found", nameof(id));
             
@@ -25,7 +25,7 @@ public class EmployeeRepository : IEmployeeRepository
 
         public async Task<EmployeeEntity> GetByEmailAsync(string email)
         {
-            var entity = await _context.Employees.FirstOrDefaultAsync(e => e.Email == email);
+            var entity = await _context.Employees.AsNoTracking().FirstOrDefaultAsync(e => e.Email == email);
             if (entity == null)
                 throw new ArgumentException("Employee with given email is not found", nameof(email));
             
@@ -34,7 +34,7 @@ public class EmployeeRepository : IEmployeeRepository
 
         public async Task<IEnumerable<EmployeeEntity>> GetAllAsync()
         {
-            var entities = await _context.Employees.ToListAsync();
+            var entities = await _context.Employees.AsNoTracking().ToListAsync();
             if (entities == null || !entities.Any())
                 throw new ArgumentException("No employees found");
             
@@ -43,7 +43,7 @@ public class EmployeeRepository : IEmployeeRepository
 
         public async Task<IEnumerable<EmployeeEntity>> GetByPositionAsync(PositionEnum position)
         {
-            var entities = await _context.Employees
+            var entities = await _context.Employees.AsNoTracking()
                 .Where(e => e.Position == position).ToListAsync();
             if (entities == null || !entities.Any())
                 throw new ArgumentException("No employees found with the given position", nameof(position));
@@ -53,7 +53,7 @@ public class EmployeeRepository : IEmployeeRepository
 
         public async Task<IEnumerable<EmployeeEntity>> GetBySurnameAsync(string surname)
         {
-            var entities = await _context.Employees
+            var entities = await _context.Employees.AsNoTracking()
                 .Where(e => e.Surname == surname).ToListAsync();
             if (entities == null || !entities.Any())
                 throw new ArgumentException("No employees found with the given surname", nameof(surname));
@@ -63,7 +63,7 @@ public class EmployeeRepository : IEmployeeRepository
 
         public async Task<IEnumerable<EmployeeEntity>> GetByIsFiredStatusAsync(bool isFired)
         {
-            var entities = await _context.Employees
+            var entities = await _context.Employees.AsNoTracking()
                 .Where(e => e.IsFired == isFired).ToListAsync();
             if (entities == null || !entities.Any())
                 throw new ArgumentException("No employees found with the given fired status", nameof(isFired));
@@ -73,7 +73,7 @@ public class EmployeeRepository : IEmployeeRepository
 
         public async Task<IEnumerable<EmployeeEntity>> GetByCreatedAtRangeAsync(DateTime startDate, DateTime endDate)
         {
-            var entities = await _context.Employees
+            var entities = await _context.Employees.AsNoTracking()
                 .Where(e => e.CreatedAt >= startDate && e.CreatedAt <= endDate).ToListAsync();
             if (entities == null || !entities.Any())
                 throw new ArgumentException("No employees found in the given date range", nameof(startDate));
@@ -95,7 +95,8 @@ public class EmployeeRepository : IEmployeeRepository
             if (employee == null)
                 throw new ArgumentNullException(nameof(employee), "Employee cannot be null");
 
-            var existingEmployee = await _context.Employees.FindAsync(employee.Id);
+            var existingEmployee = await _context.Employees.
+                AsNoTracking().FirstOrDefaultAsync(b => b.Id == employee.Id);
             if (existingEmployee == null)
                 throw new ArgumentException("Employee with given Id is not found", nameof(employee.Id));
 
@@ -105,7 +106,7 @@ public class EmployeeRepository : IEmployeeRepository
 
         public async Task DeleteAsync(Guid id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+            var employee = await _context.Employees.AsNoTracking().FirstOrDefaultAsync(b => b.Id == id);
             if (employee == null)
                 throw new ArgumentException("Employee with given Id is not found", nameof(id));
 
