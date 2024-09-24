@@ -5,6 +5,7 @@ namespace WarehouseManager.BusinessLogic.ContractsServices;
 
 public interface IEmployeeService
 {
+    Task Register(string name, string surname, string email, string password, PositionEnum position);
     Task<Employee> GetByIdAsync(Guid id);
     Task<Employee> GetByEmailAsync(string email);
     Task<IEnumerable<Employee>> GetAllAsync();

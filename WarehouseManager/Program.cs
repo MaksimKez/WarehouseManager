@@ -1,16 +1,17 @@
 using Microsoft.EntityFrameworkCore;
+using WarehouseManager.BusinessLogic;
 using WarehouseManager.DataAccess;
 using WarehouseManager.DataAccess.ContractsRepositories;
 using WarehouseManager.DataAccess.Repositories;
 using WarehouseManager.Database;
 using WarehouseManager.BusinessLogic.AutoMapperProfiles;
 using WarehouseManager.BusinessLogic.ContractsServices;
-using WarehouseManager.BusinessLogic.Models;
 using WarehouseManager.BusinessLogic.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(JwtOptions)));
 
 builder.Services.AddControllers();
 
