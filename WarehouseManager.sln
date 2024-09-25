@@ -8,8 +8,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseManager.Database",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseManager.BusinessLogic", "WarehouseManager.BusinessLogic\WarehouseManager.BusinessLogic.csproj", "{50B98973-25A7-4330-8A11-7A7D658DBC6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseManager.Utilities", "WarehouseManager.Utilities\WarehouseManager.Utilities.csproj", "{FBC7A2D7-0CB5-42D1-BD4E-E0FE4C969086}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,9 +30,5 @@ Global
 		{50B98973-25A7-4330-8A11-7A7D658DBC6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50B98973-25A7-4330-8A11-7A7D658DBC6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50B98973-25A7-4330-8A11-7A7D658DBC6A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FBC7A2D7-0CB5-42D1-BD4E-E0FE4C969086}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FBC7A2D7-0CB5-42D1-BD4E-E0FE4C969086}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FBC7A2D7-0CB5-42D1-BD4E-E0FE4C969086}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FBC7A2D7-0CB5-42D1-BD4E-E0FE4C969086}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

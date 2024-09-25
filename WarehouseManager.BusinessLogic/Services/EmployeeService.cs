@@ -1,4 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.InteropServices.JavaScript;
+using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
 using AutoMapper;
@@ -59,7 +61,7 @@ public class EmployeeService : IEmployeeService
 
     private string GenerateToken(Employee employee)
     {
-        Claim[] claims = [new Claim("employeeId", employee.Id.ToString()), new Claim("employeeEmail", employee.Email)];
+        Claim[] claims = [new("employeeId", employee.Id.ToString()), new("employeeEmail", employee.Email)];
         
         var signingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)), SecurityAlgorithms.Sha256);
