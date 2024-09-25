@@ -1,4 +1,4 @@
-namespace WarehouseManager.BusinessLogic;
+namespace WarehouseManager.BusinessLogic.Auth;
 
 public class JwtOptions
 {

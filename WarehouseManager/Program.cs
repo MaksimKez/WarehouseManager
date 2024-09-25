@@ -1,5 +1,10 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using WarehouseManager.BusinessLogic;
+using WarehouseManager.BusinessLogic.Auth;
 using WarehouseManager.DataAccess;
 using WarehouseManager.DataAccess.ContractsRepositories;
 using WarehouseManager.DataAccess.Repositories;

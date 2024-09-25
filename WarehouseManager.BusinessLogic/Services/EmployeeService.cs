@@ -6,6 +6,8 @@ using System.Text;
 using AutoMapper;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using WarehouseManager.BusinessLogic.Auth;
+using WarehouseManager.BusinessLogic.Auth.Interfaces;
 using WarehouseManager.BusinessLogic.ContractsServices;
 using WarehouseManager.BusinessLogic.Exceptions;
 using WarehouseManager.BusinessLogic.Models;
@@ -18,12 +20,12 @@ public class EmployeeService : IEmployeeService
 {
     private readonly IEmployeeRepository _repository;
     private readonly IMapper _mapper;
-    private readonly JwtOptions _options;
+    private readonly IJwtProvider _jwtProvider;
 
-    public EmployeeService(IMapper mapper, IEmployeeRepository repository, IOptions<JwtOptions> options)
+    public EmployeeService(IMapper mapper, IEmployeeRepository repository, IJwtProvider provider)
     {
         _repository = repository ?? throw new ArgumentException("Repository error", nameof(repository));
-        _options = options.Value?? throw new ArgumentException("JwtOptions error", nameof(mapper));
+        _jwtProvider = provider?? throw new ArgumentException("JwtProvider error", nameof(mapper));
         _mapper = mapper ?? throw new ArgumentException("Mapper error", nameof(mapper));
     }
 
@@ -55,25 +57,11 @@ public class EmployeeService : IEmployeeService
             throw new InvalidPasswordException();
         }
         
-        var token = GenerateToken(employee);
+        var token = _jwtProvider.GenerateToken(employee);
         return token;
     }
-
-    private string GenerateToken(Employee employee)
-    {
-        Claim[] claims = [new("employeeId", employee.Id.ToString()), new("employeeEmail", employee.Email)];
-        
-        var signingCredentials = new SigningCredentials(
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)), SecurityAlgorithms.Sha256);
-
-        var token = new JwtSecurityToken(signingCredentials: signingCredentials,
-            claims: claims,
-            expires: DateTime.UtcNow.AddHours(_options.ExpiresHours));
-
-        var value = new JwtSecurityTokenHandler().WriteToken(token);
-        return value;
-    }
-
+    
+    
     public async Task<Employee> GetByIdAsync(Guid id)
     {
         var employee = await _repository.GetByIdAsync(id);
