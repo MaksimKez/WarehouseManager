@@ -18,16 +18,29 @@ public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider
             new Claim("employeeEmail", employee.Email), new Claim("position", "Employee")
         ];
         
+        return GetToken(claims);
+    }
+    // write overload for GenerateToken(Boss boss)
+    public string GenerateToken(Boss boss)
+    {
+        Claim[] claims = [new Claim("bossId", boss.Id.ToString()),
+            new Claim("bossEmail", boss.Email), new Claim("position", "Boss")
+        ];
+        
+        return GetToken(claims);
+    }
+
+    private string GetToken(Claim[] claims)
+    {
         var signingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)), SecurityAlgorithms.Sha256);
 
         var token = new JwtSecurityToken(signingCredentials: signingCredentials,
             claims: claims,
             expires: DateTime.UtcNow.AddHours(_options.ExpiresHours));
-
+        
         var value = new JwtSecurityTokenHandler().WriteToken(token);
         return value;
     }
-    // write overload for GenerateToken(Boss boss)
     
 }

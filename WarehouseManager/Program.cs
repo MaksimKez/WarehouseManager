@@ -1,9 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using WarehouseManager.BusinessLogic;
 using WarehouseManager.BusinessLogic.Auth;
 using WarehouseManager.DataAccess;
 using WarehouseManager.DataAccess.ContractsRepositories;
@@ -31,6 +29,7 @@ builder.Services.AddDbContext<ApplicationDatabaseContext>(x =>
     x.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+
 builder.Services.AddAutoMapper(typeof(BossProfile));
 builder.Services.AddAutoMapper(typeof(EmployeeProfile));
 builder.Services.AddAutoMapper(typeof(ItemProfile));
@@ -42,6 +41,24 @@ builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IItemService, ItemService>();
 builder.Services.AddScoped<IShelfService, ShelfService>();
 builder.Services.AddScoped<ITodoService, TodoService>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["JwtOptions:SecretKey"]))
+        };
+    });
+
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("EmployeePolicy", policy => policy.RequireClaim("position", "Employee"))
+    .AddPolicy("BossPolicy", policy => policy.RequireClaim("position", "Boss"));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

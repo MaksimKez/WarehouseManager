@@ -1,12 +1,4 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Runtime.InteropServices.JavaScript;
-using System.Security.Authentication;
-using System.Security.Claims;
-using System.Text;
 using AutoMapper;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using WarehouseManager.BusinessLogic.Auth;
 using WarehouseManager.BusinessLogic.Auth.Interfaces;
 using WarehouseManager.BusinessLogic.ContractsServices;
 using WarehouseManager.BusinessLogic.Exceptions;
@@ -60,7 +52,6 @@ public class EmployeeService : IEmployeeService
         var token = _jwtProvider.GenerateToken(employee);
         return token;
     }
-    
     
     public async Task<Employee> GetByIdAsync(Guid id)
     {
