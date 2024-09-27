@@ -1,5 +1,7 @@
 using AutoMapper;
+using WarehouseManager.BusinessLogic.Auth.Interfaces;
 using WarehouseManager.BusinessLogic.ContractsServices;
+using WarehouseManager.BusinessLogic.Exceptions;
 using WarehouseManager.BusinessLogic.Models;
 using WarehouseManager.DataAccess.ContractsRepositories;
 using WarehouseManager.Database.Entities;
@@ -10,11 +12,43 @@ public class BossService : IBossService
 {
     private readonly IBossRepository _repository;
     private readonly IMapper _mapper;
+    private readonly IJwtProvider _jwtProvider;
 
-    public BossService(IBossRepository repository, IMapper mapper)
+    public BossService(IBossRepository repository, IMapper mapper, IJwtProvider jwtProvider)
     {
         _repository = repository ?? throw new ArgumentException("Repository error", nameof(repository));
         _mapper = mapper ?? throw new ArgumentException("Mapper error", nameof(mapper));
+        _jwtProvider = jwtProvider ?? throw new ArgumentException("JwtProvider error", nameof(mapper));
+    }
+    
+    public async Task Register(string name, string surname, string email,
+        string password)
+    {
+        var employee = new Boss()
+        {
+            Id = Guid.NewGuid(),
+            Name = name,
+            Surname = surname,
+            Email = email,
+            CreatedAt = DateTime.Now,
+            Password = password,
+        };
+
+        await _repository.AddNewAsync(_mapper.Map<BossEntity>(employee));
+    }
+
+    public async Task<string> Login(string name, string password)
+    {
+        // validate data
+        var employee = _mapper.Map<Boss>(await _repository.GetByNameAsync(name));
+
+        if (!password.Equals(employee.Password))
+        {
+            throw new InvalidPasswordException();
+        }
+        
+        var token = _jwtProvider.GenerateToken(employee);
+        return token;
     }
 
     public async Task<Boss> GetByIdAsync(Guid id)

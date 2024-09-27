@@ -24,7 +24,7 @@ public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider
     public string GenerateToken(Boss boss)
     {
         Claim[] claims = [new Claim("bossId", boss.Id.ToString()),
-            new Claim("bossEmail", boss.Email), new Claim("position", "Boss")
+            new Claim("bossName", boss.Name), new Claim("position", "Boss")
         ];
         
         return GetToken(claims);
