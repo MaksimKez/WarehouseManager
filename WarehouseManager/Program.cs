@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using WarehouseManager.AutoMapperProfilesDtoModel;
 using WarehouseManager.BusinessLogic.Auth;
 using WarehouseManager.DataAccess;
 using WarehouseManager.DataAccess.ContractsRepositories;
@@ -10,6 +11,8 @@ using WarehouseManager.Database;
 using WarehouseManager.BusinessLogic.AutoMapperProfiles;
 using WarehouseManager.BusinessLogic.ContractsServices;
 using WarehouseManager.BusinessLogic.Services;
+using WarehouseManager.Dtos;
+using EmployeeProfile = WarehouseManager.BusinessLogic.AutoMapperProfiles.EmployeeProfile;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +32,6 @@ builder.Services.AddDbContext<ApplicationDatabaseContext>(x =>
     x.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-
 builder.Services.AddAutoMapper(typeof(BossProfile));
 builder.Services.AddAutoMapper(typeof(EmployeeProfile));
 builder.Services.AddAutoMapper(typeof(ItemProfile));
@@ -41,6 +43,9 @@ builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IItemService, ItemService>();
 builder.Services.AddScoped<IShelfService, ShelfService>();
 builder.Services.AddScoped<ITodoService, TodoService>();
+
+builder.Services.AddAutoMapper(typeof(BossDtoProfile));
+builder.Services.AddAutoMapper(typeof(EmployeeDtoProfile));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
