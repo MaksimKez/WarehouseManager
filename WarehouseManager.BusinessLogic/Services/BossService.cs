@@ -21,10 +21,10 @@ public class BossService : IBossService
         _jwtProvider = jwtProvider ?? throw new ArgumentException("JwtProvider error", nameof(mapper));
     }
     
-    public async Task Register(string name, string surname, string email,
+    public async Task<Guid> Register(string name, string surname, string email,
         string password)
     {
-        var employee = new Boss()
+        var boss = new Boss()
         {
             Id = Guid.NewGuid(),
             Name = name,
@@ -34,20 +34,20 @@ public class BossService : IBossService
             Password = password,
         };
 
-        await _repository.AddNewAsync(_mapper.Map<BossEntity>(employee));
+        return await _repository.AddNewAsync(_mapper.Map<BossEntity>(boss));
     }
 
     public async Task<string> Login(string name, string password)
     {
         // validate data
-        var employee = _mapper.Map<Boss>(await _repository.GetByNameAsync(name));
+        var boss = _mapper.Map<Boss>(await _repository.GetByNameAsync(name));
 
-        if (!password.Equals(employee.Password))
+        if (!password.Equals(boss.Password))
         {
             throw new InvalidPasswordException();
         }
         
-        var token = _jwtProvider.GenerateToken(employee);
+        var token = _jwtProvider.GenerateToken(boss);
         return token;
     }
 
@@ -76,9 +76,9 @@ public class BossService : IBossService
         return bosses;
     }
 
-    public async Task AddNewAsync(Boss boss)
+    public async Task<Guid> AddNewAsync(Boss boss)
     {
-        await _repository.AddNewAsync(_mapper.Map<BossEntity>(boss));
+        return await _repository.AddNewAsync(_mapper.Map<BossEntity>(boss));
     }
 
     public async Task UpdateAsync(Boss boss)

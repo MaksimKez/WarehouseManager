@@ -62,8 +62,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("EmployeePolicy", policy => policy.RequireClaim("position", "Employee"))
-    .AddPolicy("BossPolicy", policy => policy.RequireClaim("position", "Boss"));
+    .AddPolicy("EmployeePolicy", policy =>
+        policy.RequireAssertion(context =>
+            context.User.HasClaim(c => (c.Type == "position" && (c.Value == "Employee" || c.Value == "Boss")))))
+    .AddPolicy("BossPolicy", policy =>
+        policy.RequireClaim("position", "Boss"));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -51,13 +51,15 @@ public class BossRepository : IBossRepository
         return entities;
     }
 
-    public async Task AddNewAsync(BossEntity boss)
+    public async Task<Guid> AddNewAsync(BossEntity boss)
     {
         if (boss == null)
             throw new ArgumentNullException(nameof(boss), "Boss cannot be null");
 
         await _context.Bosses.AddAsync(boss);
         await _context.SaveChangesAsync();
+
+        return boss.Id;
     }
 
     public async Task UpdateAsync(BossEntity boss)
