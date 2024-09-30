@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WarehouseManager.BusinessLogic.ContractsServices;
 using WarehouseManager.BusinessLogic.Models;
@@ -21,6 +22,8 @@ public class EmployeeController : ControllerBase
         _service = service ?? throw new ArgumentException("Service error", nameof(service));
     }
 
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(EmployeeRegistrationDto), StatusCodes.Status201Created)]
     public async Task<ActionResult<EmployeeRegistrationDto>> Register([FromBody] EmployeeRegistrationDto employeeRegistrationDto)
     {
         employeeRegistrationDto.Id = await _service.Register(employeeRegistrationDto.Name,
@@ -31,6 +34,8 @@ public class EmployeeController : ControllerBase
         return Created("Registration success", employeeRegistrationDto);
     }
 
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     public async Task<ActionResult<string>> Login([FromBody] EmployeeLoginDto employeeLoginDto)
     {
         var token = await _service.Login(employeeLoginDto.Email, employeeLoginDto.Password);
@@ -38,6 +43,8 @@ public class EmployeeController : ControllerBase
         return Ok(token);
     }
 
+    [Authorize(Policy = "BossPolicy")]
+    [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status200OK)]
     public async Task<ActionResult<EmployeeDto>> GetById([FromBody] Guid id)
     {
         var dto = _mapper.Map<EmployeeDto>(await _service.GetByIdAsync(id));
@@ -45,12 +52,16 @@ public class EmployeeController : ControllerBase
         return Ok(dto);
     }
 
+    [Authorize(Policy = "EmployeePolicy")]
+    [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status200OK)]
     public async Task<ActionResult<EmployeeDto>> GetByEmail([FromBody] string email)
     {
         var dto = _mapper.Map<EmployeeDto>(await _service.GetByEmailAsync(email));
         return Ok(dto);
     }
 
+    [Authorize(Policy = "BossPolicy")]
+    [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<EmployeeDto>>> GetAll()
     {
         var employees = await _service.GetAllAsync();
@@ -59,6 +70,8 @@ public class EmployeeController : ControllerBase
         return Ok(dtos);
     }
 
+    [Authorize(Policy = "BossPolicy")]
+    [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<EmployeeDto>>> GetByPosition([FromBody] PositionEnum position)
     {
         var employees = await _service.GetByPositionAsync(position);
@@ -67,6 +80,8 @@ public class EmployeeController : ControllerBase
         return Ok(dtos);
     }
 
+    [Authorize(Policy = "BossPolicy")]
+    [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<EmployeeDto>>> GetBySurname([FromBody] string surname)
     {
         var employees = await _service.GetBySurnameAsync(surname);
@@ -75,6 +90,8 @@ public class EmployeeController : ControllerBase
         return Ok(dtos);
     }
 
+    [Authorize(Policy = "BossPolicy")]
+    [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<EmployeeDto>>> GetByIsFiredStatus([FromBody] bool isFired)
     {
         var employees = await _service.GetByIsFiredStatusAsync(isFired);
@@ -83,6 +100,8 @@ public class EmployeeController : ControllerBase
         return Ok(dtos);
     }
     
+    [Authorize(Policy = "BossPolicy")]
+    [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<EmployeeDto>>> GetByCreatedAtRange([FromBody] DateTime startDate,
         [FromBody] DateTime endDate)
     {
@@ -92,17 +111,23 @@ public class EmployeeController : ControllerBase
         return Ok(dtos);
     }
 
+    [Authorize(Policy = "BossPolicy")]
+    [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status200OK)]
     public async Task<ActionResult<Guid>> Add(EmployeeDto dto)
     {
         return Ok(await _service.AddAsync(_mapper.Map<Employee>(dto)));
     }
     
+    [Authorize(Policy = "BossPolicy")]
+    [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status200OK)]
     public async Task<ActionResult> Update(EmployeeDto dto)
     {
         await _service.UpdateAsync(_mapper.Map<Employee>(dto));
         return Ok();
     }
 
+    [Authorize(Policy = "BossPolicy")]
+    [ProducesResponseType(typeof(EmployeeDto), StatusCodes.Status200OK)]
     public async Task<ActionResult> Delete([FromBody] Guid id)
     {
         await _service.DeleteAsync(id);
