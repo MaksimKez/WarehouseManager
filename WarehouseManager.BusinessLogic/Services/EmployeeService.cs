@@ -21,7 +21,7 @@ public class EmployeeService : IEmployeeService
         _mapper = mapper ?? throw new ArgumentException("Mapper error", nameof(mapper));
     }
 
-    public async Task Register(string name, string surname, string email,
+    public async Task<Guid> Register(string name, string surname, string email,
         string password, PositionEnum position)
     {
         var employee = new Employee()
@@ -36,7 +36,7 @@ public class EmployeeService : IEmployeeService
             Position = position
         };
 
-        await _repository.AddAsync(_mapper.Map<EmployeeEntity>(employee));
+        return await _repository.AddAsync(_mapper.Map<EmployeeEntity>(employee));
     }
 
     public async Task<string> Login(string email, string password)
@@ -106,9 +106,9 @@ public class EmployeeService : IEmployeeService
         return employees;
     }
 
-    public async Task AddAsync(Employee employee)
+    public async Task<Guid> AddAsync(Employee employee)
     {
-        await _repository.AddAsync(_mapper.Map<EmployeeEntity>(employee));
+        return await _repository.AddAsync(_mapper.Map<EmployeeEntity>(employee));
     }
 
     public async Task UpdateAsync(Employee employee)

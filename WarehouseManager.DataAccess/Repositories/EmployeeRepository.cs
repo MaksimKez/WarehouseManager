@@ -81,13 +81,14 @@ public class EmployeeRepository : IEmployeeRepository
             return entities;
         }
 
-        public async Task AddAsync(EmployeeEntity employee)
+        public async Task<Guid> AddAsync(EmployeeEntity employee)
         {
             if (employee == null)
                 throw new ArgumentNullException(nameof(employee), "Employee cannot be null");
 
             await _context.Employees.AddAsync(employee);
             await _context.SaveChangesAsync();
+            return employee.Id;
         }
 
         public async Task UpdateAsync(EmployeeEntity employee)

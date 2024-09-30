@@ -61,11 +61,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+// The code below allows bosses to use employees' endpoints (EmployeePolicy) and their own(BossEmployee),
+// but employees can use only endpoints with EmployeePolicy
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("EmployeePolicy", policy =>
         policy.RequireAssertion(context =>
             context.User.HasClaim(c => (c.Type == "position" && (c.Value == "Employee" || c.Value == "Boss")))))
-    .AddPolicy("BossPolicy", policy =>
+    .AddPolicy("BossEmployee", policy =>
         policy.RequireClaim("position", "Boss"));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

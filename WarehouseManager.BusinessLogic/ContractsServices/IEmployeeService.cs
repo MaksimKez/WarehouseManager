@@ -5,7 +5,8 @@ namespace WarehouseManager.BusinessLogic.ContractsServices;
 
 public interface IEmployeeService
 {
-    Task Register(string name, string surname, string email, string password, PositionEnum position);
+    Task<Guid> Register(string name, string surname, string email, string password, PositionEnum position);
+    Task<string> Login(string email, string password);
     Task<Employee> GetByIdAsync(Guid id);
     Task<Employee> GetByEmailAsync(string email);
     Task<IEnumerable<Employee>> GetAllAsync();
@@ -13,7 +14,7 @@ public interface IEmployeeService
     Task<IEnumerable<Employee>> GetBySurnameAsync(string surname);
     Task<IEnumerable<Employee>> GetByIsFiredStatusAsync(bool isFired);
     Task<IEnumerable<Employee>> GetByCreatedAtRangeAsync(DateTime startDate, DateTime endDate);
-    Task AddAsync(Employee employee);
+    Task<Guid> AddAsync(Employee employee);
     Task UpdateAsync(Employee employee);
     Task DeleteAsync(Guid id);
 }

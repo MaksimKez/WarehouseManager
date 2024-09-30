@@ -11,7 +11,7 @@ public interface IEmployeeRepository
     Task<IEnumerable<EmployeeEntity>> GetBySurnameAsync(string surname);
     Task<IEnumerable<EmployeeEntity>> GetByIsFiredStatusAsync(bool isFired);
     Task<IEnumerable<EmployeeEntity>> GetByCreatedAtRangeAsync(DateTime startDate, DateTime endDate);
-    Task AddAsync(EmployeeEntity employee);
+    Task<Guid> AddAsync(EmployeeEntity employee);
     Task UpdateAsync(EmployeeEntity employee);
     Task DeleteAsync(Guid id);
 }
