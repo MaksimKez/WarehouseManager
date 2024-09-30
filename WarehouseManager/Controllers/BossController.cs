@@ -92,6 +92,7 @@ public class BossController : ControllerBase
         // add validation
         var guid = await _service.AddNewAsync(_mapper.Map<Boss>(dto));
         
+        // TODO: Use GetById and return its GUID with a URI (of GetById) to access it
         return Created("Boss was created", guid);
     }
 
@@ -101,14 +102,14 @@ public class BossController : ControllerBase
     {        
         // add validation
         await _service.UpdateAsync(_mapper.Map<Boss>(dto));
-        return Ok("Boss updated successfully");
+        return Ok();
     }
     
     [Authorize(Policy = "BossPolicy")]
-    [ProducesResponseType(typeof(BossDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> Delete([FromBody] Guid id)
     {
         await _service.DeleteAsync(id);
-        return Ok("Boss deleted successfully");
+        return Ok();
     }
 }
