@@ -10,14 +10,14 @@ public class ItemController : ControllerBase
 {
     private readonly IItemService _service;
 
-    public ItemController(IItemService service, IMapper mapper)
+    public ItemController(IItemService service)
     {
         _service = service ?? throw new ArgumentException("Service error", nameof(service));
     }
 
     [Authorize(Policy = "EmployeePolicy")]
     [ProducesResponseType(typeof(Item), StatusCodes.Status200OK)]
-    public async Task<ActionResult<Item>> GetById(Guid id)
+    public async Task<ActionResult<Item>> GetById([FromBody] Guid id)
     {
         var item = await _service.GetByIdAsync(id);
         
@@ -26,7 +26,7 @@ public class ItemController : ControllerBase
     
     [Authorize(Policy = "EmployeePolicy")]
     [ProducesResponseType(typeof(Item), StatusCodes.Status200OK)]
-    public async Task<ActionResult<Item>> GetByFragileStatus(bool isFragile)
+    public async Task<ActionResult<Item>> GetByFragileStatus([FromBody] bool isFragile)
     {
         var item = await _service.GetByFragileStatusAsync(isFragile);
         
@@ -44,7 +44,7 @@ public class ItemController : ControllerBase
 
     [Authorize(Policy = "EmployeePolicy")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult> Add(Item item)
+    public async Task<ActionResult> Add([FromBody] Item item)
     {
         await _service.AddAsync(item);
         return Ok();
@@ -52,7 +52,7 @@ public class ItemController : ControllerBase
 
     [Authorize(Policy = "EmployeePolicy")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult> Update(Item item)
+    public async Task<ActionResult> Update([FromBody] Item item)
     {
         await _service.UpdateAsync(item);
         return Ok();
@@ -60,7 +60,7 @@ public class ItemController : ControllerBase
 
     [Authorize(Policy = "EmployeePolicy")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult> Delete(Guid id)
+    public async Task<ActionResult> Delete([FromBody] Guid id)
     {
         await _service.DeleteAsync(id);
         return Ok();
