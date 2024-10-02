@@ -39,11 +39,11 @@ public class ShelfController : ControllerBase
     }
 
     [Authorize(Policy = "EmployeePolicy")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> Update(Shelf shelf)
     {
         await _service.UpdateAsync(shelf);
-        return Created();
+        return Ok();
     }
 
     [Authorize(Policy = "EmployeePolicy")]
