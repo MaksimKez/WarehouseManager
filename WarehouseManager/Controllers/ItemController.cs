@@ -43,11 +43,11 @@ public class ItemController : ControllerBase
     }
 
     [Authorize(Policy = "EmployeePolicy")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult> Add([FromBody] Item item)
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
+    public async Task<ActionResult<Guid>> Add([FromBody] Item item)
     {
-        await _service.AddAsync(item);
-        return Ok();
+        var guid = await _service.AddAsync(item);
+        return Created(nameof(GetById), guid);
     }
 
     [Authorize(Policy = "EmployeePolicy")]

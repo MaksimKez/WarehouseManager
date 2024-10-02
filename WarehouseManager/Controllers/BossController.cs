@@ -32,16 +32,15 @@ public class BossController : ControllerBase
         bossRegistrationDto.Id = await _service.Register(bossRegistrationDto.Name, bossRegistrationDto.Surname,
             bossRegistrationDto.Email, bossRegistrationDto.Password);
 
-        return Created("Registration success", bossRegistrationDto);
+        return Created(nameof(GetById), bossRegistrationDto);
     }
 
     [AllowAnonymous]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     public async Task<ActionResult<string>> Login([FromBody]BossLoginDto bossLoginDto)
     {
-        // add validation
-        
         var token = await _service.Login(bossLoginDto.Name, bossLoginDto.Password);
+        
         return Ok(token);
     }
 
@@ -89,18 +88,15 @@ public class BossController : ControllerBase
     [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
     public async Task<ActionResult<Guid>> AddNew([FromBody] BossDto dto)
     {
-        // add validation
         var guid = await _service.AddNewAsync(_mapper.Map<Boss>(dto));
         
-        // TODO: Use GetById and return its GUID with a URI (of GetById) to access it
-        return Created("Boss was created", guid);
+        return Created(nameof(GetById), guid);
     }
 
     [Authorize(Policy = "BossPolicy")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult> Update([FromBody] BossDto dto)
     {        
-        // add validation
         await _service.UpdateAsync(_mapper.Map<Boss>(dto));
         return Ok();
     }

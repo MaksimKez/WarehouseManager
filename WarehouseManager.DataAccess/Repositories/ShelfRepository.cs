@@ -32,13 +32,15 @@ public class ShelfRepository : IShelfRepository
         return entities;
     }
 
-    public async Task AddAsync(ShelfEntity shelf)
+    public async Task<Guid> AddAsync(ShelfEntity shelf)
     {
         if (shelf == null)
             throw new ArgumentNullException(nameof(shelf), "Shelf cannot be null");
 
         await _context.Shelves.AddAsync(shelf);
         await _context.SaveChangesAsync();
+
+        return shelf.Id;
     }
 
     public async Task UpdateAsync(ShelfEntity shelf)

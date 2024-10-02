@@ -35,9 +35,9 @@ public class ShelfService : IShelfService
         return shelves;
     }
 
-    public async Task AddAsync(Shelf shelf)
+    public async Task<Guid> AddAsync(Shelf shelf)
     {
-        await _repository.AddAsync(_mapper.Map<ShelfEntity>(shelf));
+        return await _repository.AddAsync(_mapper.Map<ShelfEntity>(shelf));
     }
 
     public async Task UpdateAsync(Shelf shelf)

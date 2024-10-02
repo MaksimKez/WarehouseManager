@@ -71,11 +71,11 @@ public class TodoController : ControllerBase
     }
 
     [Authorize(Policy = "EmployeePolicy")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    public async Task<ActionResult> Add([FromBody] Todo todo)
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
+    public async Task<ActionResult<Guid>> Add([FromBody] Todo todo)
     {
-        await _service.AddAsync(todo);
-        return Created();
+        var guid = await _service.AddAsync(todo);
+        return Created(nameof(Guid), guid);
     }
     
     [Authorize(Policy = "EmployeePolicy")]

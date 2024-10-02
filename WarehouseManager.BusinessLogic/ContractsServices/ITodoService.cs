@@ -11,7 +11,7 @@ public interface ITodoService
     Task<IEnumerable<Todo>> GetByItemIdAsync(Guid itemId);
     Task<IEnumerable<Todo>> GetByIsDoneStatusAsync(bool isDone);
     Task<IEnumerable<Todo>> GetByCreatedAtRangeAsync(DateTime startDate, DateTime endDate);
-    Task AddAsync(Todo todo);
+    Task<Guid> AddAsync(Todo todo);
     Task UpdateAsync(Todo todo);
     Task DeleteAsync(Guid id);
 }

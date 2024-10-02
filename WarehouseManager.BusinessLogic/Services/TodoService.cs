@@ -74,9 +74,9 @@ public class TodoService : ITodoService
         return todos;
     }
 
-    public async Task AddAsync(Todo todo)
+    public async Task<Guid> AddAsync(Todo todo)
     {
-        await _repository.AddAsync(_mapper.Map<TodoEntity>(todo));
+        return await _repository.AddAsync(_mapper.Map<TodoEntity>(todo));
     }
 
     public async Task UpdateAsync(Todo todo)

@@ -82,13 +82,15 @@ public class TodoRepository : ITodoRepository
         return entities;
     }
 
-    public async Task AddAsync(TodoEntity todo)
+    public async Task<Guid> AddAsync(TodoEntity todo)
     {
         if (todo == null)
             throw new ArgumentNullException(nameof(todo), "Todo cannot be null");
 
         await _context.Todos.AddAsync(todo);
         await _context.SaveChangesAsync();
+
+        return todo.Id;
     }
 
     public async Task UpdateAsync(TodoEntity todo)

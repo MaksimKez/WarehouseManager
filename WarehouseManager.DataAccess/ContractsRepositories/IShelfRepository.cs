@@ -6,7 +6,7 @@ public interface IShelfRepository
 {
     Task<ShelfEntity> GetByIdAsync(Guid id);
     Task<IEnumerable<ShelfEntity>> GetAllAsync();
-    Task AddAsync(ShelfEntity shelf);
+    Task<Guid> AddAsync(ShelfEntity shelf);
     Task UpdateAsync(ShelfEntity shelf);
     Task DeleteAsync(Guid id);
 }

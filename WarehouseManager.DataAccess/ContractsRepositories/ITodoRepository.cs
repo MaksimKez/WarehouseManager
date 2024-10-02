@@ -11,7 +11,7 @@ public interface ITodoRepository
     Task<IEnumerable<TodoEntity>> GetByItemIdAsync(Guid itemId);
     Task<IEnumerable<TodoEntity>> GetByIsDoneStatusAsync(bool isDone);
     Task<IEnumerable<TodoEntity>> GetByCreatedAtRangeAsync(DateTime startDate, DateTime endDate);
-    Task AddAsync(TodoEntity todo);
+    Task<Guid> AddAsync(TodoEntity todo);
     Task UpdateAsync(TodoEntity todo);
     Task DeleteAsync(Guid id);
 }

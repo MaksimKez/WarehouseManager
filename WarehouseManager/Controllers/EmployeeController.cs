@@ -31,7 +31,7 @@ public class EmployeeController : ControllerBase
             employeeRegistrationDto.Position);
         employeeRegistrationDto.IsFired = false;
         
-        return Created("Registration success", employeeRegistrationDto);
+        return Created(nameof(GetById), employeeRegistrationDto);
     }
 
     [AllowAnonymous]
@@ -112,10 +112,10 @@ public class EmployeeController : ControllerBase
     }
 
     [Authorize(Policy = "BossPolicy")]
-    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
     public async Task<ActionResult<Guid>> Add([FromBody] EmployeeDto dto)
     {
-        return Ok(await _service.AddAsync(_mapper.Map<Employee>(dto)));
+        return Created(nameof(GetById) ,await _service.AddAsync(_mapper.Map<Employee>(dto)));
     }
     
     [Authorize(Policy = "BossPolicy")]

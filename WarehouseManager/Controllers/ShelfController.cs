@@ -31,11 +31,11 @@ public class ShelfController : ControllerBase
     }
 
     [Authorize(Policy = "EmployeePolicy")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult> Add(Shelf shelf)
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status201Created)]
+    public async Task<ActionResult<Guid>> Add(Shelf shelf)
     {
-        await _service.AddAsync(shelf);
-        return Created();
+        var guid = await _service.AddAsync(shelf);
+        return Created(nameof(GetById), guid);
     }
 
     [Authorize(Policy = "EmployeePolicy")]

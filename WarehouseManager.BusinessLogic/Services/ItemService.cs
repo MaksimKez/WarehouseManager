@@ -40,9 +40,9 @@ public class ItemService : IItemService
         return items;
     }
 
-    public async Task AddAsync(Item item)
+    public async Task<Guid> AddAsync(Item item)
     {
-        await _repository.AddAsync(_mapper.Map<ItemEntity>(item));
+        return await _repository.AddAsync(_mapper.Map<ItemEntity>(item));
     }
 
     public async Task UpdateAsync(Item item)

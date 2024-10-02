@@ -42,13 +42,14 @@ public class ItemRepository : IItemRepository
         return entities;
     }
 
-    public async Task AddAsync(ItemEntity item)
+    public async Task<Guid> AddAsync(ItemEntity item)
     {
         if (item == null)
             throw new ArgumentNullException(nameof(item), "Item cannot be null");
 
         await _context.Items.AddAsync(item);
         await _context.SaveChangesAsync();
+        return item.Id;
     }
 
     public async Task UpdateAsync(ItemEntity item)
