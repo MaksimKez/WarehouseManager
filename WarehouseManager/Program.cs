@@ -12,6 +12,7 @@ using WarehouseManager.BusinessLogic.AutoMapperProfiles;
 using WarehouseManager.BusinessLogic.ContractsServices;
 using WarehouseManager.BusinessLogic.Services;
 using WarehouseManager.Dtos;
+using WarehouseManager.Middlewares;
 using EmployeeProfile = WarehouseManager.BusinessLogic.AutoMapperProfiles.EmployeeProfile;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -84,6 +85,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthorization();
 

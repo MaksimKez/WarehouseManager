@@ -36,7 +36,7 @@ public class EmployeeRepository : IEmployeeRepository
         {
             var entities = await _context.Employees.AsNoTracking().ToListAsync();
             if (entities == null || !entities.Any())
-                throw new ArgumentException("No employees found");
+                throw new ArgumentException("Employees are not found");
             
             return entities;
         }
@@ -46,7 +46,7 @@ public class EmployeeRepository : IEmployeeRepository
             var entities = await _context.Employees.AsNoTracking()
                 .Where(e => e.Position == position).ToListAsync();
             if (entities == null || !entities.Any())
-                throw new ArgumentException("No employees found with the given position", nameof(position));
+                throw new ArgumentException("Employees with given position are not found", nameof(position));
             
             return entities;
         }
@@ -56,7 +56,7 @@ public class EmployeeRepository : IEmployeeRepository
             var entities = await _context.Employees.AsNoTracking()
                 .Where(e => e.Surname == surname).ToListAsync();
             if (entities == null || !entities.Any())
-                throw new ArgumentException("No employees found with the given surname", nameof(surname));
+                throw new ArgumentException("Employees with given surname are not found", nameof(surname));
             
             return entities;
         }
@@ -66,7 +66,7 @@ public class EmployeeRepository : IEmployeeRepository
             var entities = await _context.Employees.AsNoTracking()
                 .Where(e => e.IsFired == isFired).ToListAsync();
             if (entities == null || !entities.Any())
-                throw new ArgumentException("No employees found with the given fired status", nameof(isFired));
+                throw new ArgumentException("Employees with given isFired status are not found", nameof(isFired));
             
             return entities;
         }
@@ -76,7 +76,7 @@ public class EmployeeRepository : IEmployeeRepository
             var entities = await _context.Employees.AsNoTracking()
                 .Where(e => e.CreatedAt >= startDate && e.CreatedAt <= endDate).ToListAsync();
             if (entities == null || !entities.Any())
-                throw new ArgumentException("No employees found in the given date range", nameof(startDate));
+                throw new ArgumentException("Employees with given date range are not found", nameof(startDate));
             
             return entities;
         }

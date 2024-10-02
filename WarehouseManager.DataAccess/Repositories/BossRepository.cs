@@ -46,7 +46,7 @@ public class BossRepository : IBossRepository
         var entities = await _context.Bosses.AsNoTracking()
             .Where(b => b.CreatedAt.Date == dateOfReg.Date).ToListAsync();
         if (entities == null || !entities.Any())
-            throw new ArgumentException("No bosses found for the given registration date", nameof(dateOfReg));
+            throw new ArgumentException("Bosses for this date are not found", nameof(dateOfReg));
         
         return entities;
     }

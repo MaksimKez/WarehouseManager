@@ -27,7 +27,7 @@ public class TodoRepository : ITodoRepository
     {
         var entities = await _context.Todos.AsNoTracking().ToListAsync();
         if (entities == null || entities.Count == 0)
-            throw new ArgumentException("No todos found");
+            throw new ArgumentException("Todos not found");
         
         return entities;
     }
@@ -37,7 +37,7 @@ public class TodoRepository : ITodoRepository
         var entities = await _context.Todos
             .Where(t => t.EmployeeId == employeeId).AsNoTracking().ToListAsync();
         if (entities == null || !entities.Any())
-            throw new ArgumentException("No todos found for the given employee", nameof(employeeId));
+            throw new ArgumentException("Todos for employee with given id are not found", nameof(employeeId));
         
         return entities;
     }
@@ -47,7 +47,7 @@ public class TodoRepository : ITodoRepository
         var entities = await _context.Todos.AsNoTracking()
             .Where(t => t.ShelfId == shelfId).ToListAsync();
         if (entities == null || !entities.Any())
-            throw new ArgumentException("No todos found for the given shelf", nameof(shelfId));
+            throw new ArgumentException("Todos related to shelf with given id are not found", nameof(shelfId));
         
         return entities;
     }
@@ -57,7 +57,7 @@ public class TodoRepository : ITodoRepository
         var entities = await _context.Todos.AsNoTracking()
             .Where(t => t.ItemId == itemId).ToListAsync();
         if (entities == null || !entities.Any())
-            throw new ArgumentException("No todos found for the given item", nameof(itemId));
+            throw new ArgumentException("Todos related to item with given id are not found", nameof(itemId));
         
         return entities;
     }
@@ -67,7 +67,7 @@ public class TodoRepository : ITodoRepository
         var entities = await _context.Todos.AsNoTracking()
             .Where(t => t.IsDone == isDone).ToListAsync();
         if (entities == null || !entities.Any())
-            throw new ArgumentException("No todos found with the given status", nameof(isDone));
+            throw new ArgumentException("Todos with given isDone status are not found", nameof(isDone));
         
         return entities;
     }
@@ -77,7 +77,7 @@ public class TodoRepository : ITodoRepository
         var entities = await _context.Todos.AsNoTracking()
             .Where(t => t.CreatedAt >= startDate && t.CreatedAt <= endDate).ToListAsync();
         if (entities == null || !entities.Any())
-            throw new ArgumentException("No todos found in the given date range", nameof(startDate));
+            throw new ArgumentException("Todos with given date range are not found", nameof(startDate));
         
         return entities;
     }

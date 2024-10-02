@@ -27,7 +27,7 @@ public class ItemRepository : IItemRepository
     {
         var entities = await _context.Items.AsNoTracking().ToListAsync();
         if (entities == null || !entities.Any())
-            throw new ArgumentException("No items found");
+            throw new ArgumentException("Items not found");
         
         return entities;
     }
@@ -37,7 +37,7 @@ public class ItemRepository : IItemRepository
         var entities = await _context.Items.AsNoTracking()
             .Where(i => i.IsFragile == isFragile).ToListAsync();
         if (entities == null || !entities.Any())
-            throw new ArgumentException("No items found with the given fragile status", nameof(isFragile));
+            throw new ArgumentException("Item with given status is not found", nameof(isFragile));
         
         return entities;
     }

@@ -27,7 +27,7 @@ public class ShelfRepository : IShelfRepository
     {
         var entities = await _context.Shelves.ToListAsync();
         if (entities == null || !entities.Any())
-            throw new ArgumentException("No shelves found");
+            throw new ArgumentException("Shelves not found");
         
         return entities;
     }
