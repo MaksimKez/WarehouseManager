@@ -1,4 +1,6 @@
 using System.Text;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -11,7 +13,7 @@ using WarehouseManager.Database;
 using WarehouseManager.BusinessLogic.AutoMapperProfiles;
 using WarehouseManager.BusinessLogic.ContractsServices;
 using WarehouseManager.BusinessLogic.Services;
-using WarehouseManager.Dtos;
+using WarehouseManager.BusinessLogic.Validators;
 using WarehouseManager.Middlewares;
 using EmployeeProfile = WarehouseManager.BusinessLogic.AutoMapperProfiles.EmployeeProfile;
 
@@ -44,6 +46,14 @@ builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IItemService, ItemService>();
 builder.Services.AddScoped<IShelfService, ShelfService>();
 builder.Services.AddScoped<ITodoService, TodoService>();
+
+builder.Services.AddValidatorsFromAssemblyContaining<BossValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<EmployeeValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<ItemValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<ShelfValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<TodoValidator>();
+builder.Services.AddFluentValidationAutoValidation(); 
+
 
 builder.Services.AddAutoMapper(typeof(BossDtoProfile));
 builder.Services.AddAutoMapper(typeof(EmployeeDtoProfile));
