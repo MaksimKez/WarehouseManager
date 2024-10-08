@@ -13,11 +13,13 @@ public class EmployeeService : IEmployeeService
     private readonly IEmployeeRepository _repository;
     private readonly IMapper _mapper;
     private readonly IJwtProvider _jwtProvider;
+    private readonly IPasswordHasher _hasher;
 
-    public EmployeeService(IMapper mapper, IEmployeeRepository repository, IJwtProvider provider)
+    public EmployeeService(IMapper mapper, IEmployeeRepository repository, IJwtProvider provider, IPasswordHasher hasher)
     {
         _repository = repository ?? throw new ArgumentException("Repository error", nameof(repository));
-        _jwtProvider = provider?? throw new ArgumentException("JwtProvider error", nameof(mapper));
+        _jwtProvider = provider ?? throw new ArgumentException("JwtProvider error", nameof(mapper));
+        _hasher = hasher ?? throw new ArgumentException("Password hasher error", nameof(hasher));
         _mapper = mapper ?? throw new ArgumentException("Mapper error", nameof(mapper));
     }
 
@@ -32,7 +34,7 @@ public class EmployeeService : IEmployeeService
             Email = email,
             CreatedAt = DateTime.Now,
             IsFired = false,
-            Password = password,
+            Password = _hasher.Generate(password),
             Position = position
         };
 
@@ -41,10 +43,9 @@ public class EmployeeService : IEmployeeService
 
     public async Task<string> Login(string email, string password)
     {
-        // validate data
         var employee = _mapper.Map<Employee>(await _repository.GetByEmailAsync(email));
 
-        if (!password.Equals(employee.Password))
+        if (!_hasher.Verify(password, employee.Password))
         {
             throw new InvalidPasswordException();
         }

@@ -13,12 +13,14 @@ public class BossService : IBossService
     private readonly IBossRepository _repository;
     private readonly IMapper _mapper;
     private readonly IJwtProvider _jwtProvider;
+    private readonly IPasswordHasher _hasher;
 
-    public BossService(IBossRepository repository, IMapper mapper, IJwtProvider jwtProvider)
+    public BossService(IBossRepository repository, IMapper mapper, IJwtProvider jwtProvider, IPasswordHasher hasher)
     {
         _repository = repository ?? throw new ArgumentException("Repository error", nameof(repository));
         _mapper = mapper ?? throw new ArgumentException("Mapper error", nameof(mapper));
         _jwtProvider = jwtProvider ?? throw new ArgumentException("JwtProvider error", nameof(mapper));
+        _hasher = hasher ?? throw new ArgumentException("Password hasher error", nameof(hasher));
     }
     
     public async Task<Guid> Register(string name, string surname, string email,
@@ -31,7 +33,7 @@ public class BossService : IBossService
             Surname = surname,
             Email = email,
             CreatedAt = DateTime.Now,
-            Password = password,
+            Password = _hasher.Generate(password)
         };
 
         return await _repository.AddNewAsync(_mapper.Map<BossEntity>(boss));
@@ -39,10 +41,9 @@ public class BossService : IBossService
 
     public async Task<string> Login(string name, string password)
     {
-        // validate data
         var boss = _mapper.Map<Boss>(await _repository.GetByNameAsync(name));
-
-        if (!password.Equals(boss.Password))
+        
+        if (!_hasher.Verify(password, boss.Password))
         {
             throw new InvalidPasswordException();
         }
@@ -78,7 +79,9 @@ public class BossService : IBossService
 
     public async Task<Guid> AddNewAsync(Boss boss)
     {
-        return await _repository.AddNewAsync(_mapper.Map<BossEntity>(boss));
+        var entity = _mapper.Map<BossEntity>(boss);
+        entity.Password = _hasher.Generate(boss.Password);
+        return await _repository.AddNewAsync(entity);
     }
 
     public async Task UpdateAsync(Boss boss)

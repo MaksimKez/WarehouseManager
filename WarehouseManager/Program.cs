@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using WarehouseManager.AutoMapperProfilesDtoModel;
 using WarehouseManager.BusinessLogic.Auth;
+using WarehouseManager.BusinessLogic.Auth.Interfaces;
 using WarehouseManager.DataAccess;
 using WarehouseManager.DataAccess.ContractsRepositories;
 using WarehouseManager.DataAccess.Repositories;
@@ -40,6 +41,8 @@ builder.Services.AddAutoMapper(typeof(EmployeeProfile));
 builder.Services.AddAutoMapper(typeof(ItemProfile));
 builder.Services.AddAutoMapper(typeof(ShelfProfile));
 builder.Services.AddAutoMapper(typeof(TodoProfile));
+
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 builder.Services.AddScoped<IBossService, BossService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
