@@ -41,6 +41,7 @@ builder.Services.AddAutoMapper(typeof(ShelfProfile));
 builder.Services.AddAutoMapper(typeof(TodoProfile));
 
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+
 builder.Services.AddScoped<IBossService, BossService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IItemService, ItemService>();
