@@ -20,7 +20,6 @@ public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider
         
         return GetToken(claims);
     }
-    // write overload for GenerateToken(Boss boss)
     public string GenerateToken(Boss boss)
     {
         Claim[] claims = [new Claim("bossId", boss.Id.ToString()),
