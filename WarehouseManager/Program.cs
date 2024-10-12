@@ -42,6 +42,7 @@ builder.Services.AddAutoMapper(typeof(ItemProfile));
 builder.Services.AddAutoMapper(typeof(ShelfProfile));
 builder.Services.AddAutoMapper(typeof(TodoProfile));
 
+builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 builder.Services.AddScoped<IBossService, BossService>();

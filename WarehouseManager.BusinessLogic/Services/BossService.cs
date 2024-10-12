@@ -35,6 +35,8 @@ public class BossService : IBossService
             CreatedAt = DateTime.Now,
             Password = _hasher.Generate(password)
         };
+        
+        
 
         return await _repository.AddNewAsync(_mapper.Map<BossEntity>(boss));
     }
@@ -81,6 +83,7 @@ public class BossService : IBossService
     {
         var entity = _mapper.Map<BossEntity>(boss);
         entity.Password = _hasher.Generate(boss.Password);
+        
         return await _repository.AddNewAsync(entity);
     }
 
